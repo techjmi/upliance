@@ -15,6 +15,7 @@ const url ="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTSLU5_eUUGBfxf
               />
               <div>
                 <h3 className="text-xl font-bold">Company Name</h3>
+                
                 <p className="text-gray-400">Lorem ipsum dolor sit amet consectetur</p>
               </div>
             </div>
