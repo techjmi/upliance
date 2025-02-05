@@ -1,4 +1,7 @@
-const Footer = () => {
+
+
+const url ="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTSLU5_eUUGBfxfxRd4IquPiEwLbt4E_6RYMw&s";
+ const Footer = () => {
     return (
       <footer className="bg-slate-600 text-white py-8 px-4">
         <div className="max-w-6xl mx-auto flex flex-col md:flex-row gap-8">
@@ -6,13 +9,13 @@ const Footer = () => {
           <div className="md:w-1/2 w-full flex items-center">
             <div className="flex items-center space-x-4">
               <img 
-                src="/logo.png" // Replace with your logo path
+                src={url}
                 alt="Company Logo"
-                className="h-12 w-auto hover:scale-105 transition-transform"
+                className="h-12 w-auto hover:scale-105 transition-transform rounded-full"
               />
               <div>
                 <h3 className="text-xl font-bold">Company Name</h3>
-                <p className="text-gray-400">Simple tagline here</p>
+                <p className="text-gray-400">Lorem ipsum dolor sit amet consectetur</p>
               </div>
             </div>
           </div>
@@ -34,10 +37,10 @@ const Footer = () => {
             <div>
               <h4 className="text-lg font-semibold mb-3">Contact</h4>
               <div className="space-y-1">
-                <p>123 Business Street</p>
-                <p>New York, USA</p>
+                <p>Lorem ipsum dolor sit amet.</p>
+                <p>Bengaluru, India</p>
                 <p>Email: info@company.com</p>
-                <p>Phone: (123) 456-7890</p>
+                <p>Phone: +91-xxxxxxxxxx</p>
               </div>
             </div>
           </div>
@@ -45,7 +48,7 @@ const Footer = () => {
   
         {/* Copyright */}
         <div className="mt-8 pt-8 border-t border-gray-800 text-center text-gray-400">
-          <p>&copy; {new Date().getFullYear()} Company Name. All rights reserved.</p>
+          <p>&copy; {new Date().getFullYear()} TechSphere. All rights reserved.</p>
         </div>
       </footer>
     );

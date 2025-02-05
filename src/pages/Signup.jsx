@@ -1,33 +1,69 @@
 import { useState, useEffect } from 'react';
 import { v4 as uuidv4 } from 'uuid';
+import bcrypt from 'bcryptjs';
 
-const Form = () => {
-  // Form state
+const Signup = () => {
   const [formData, setFormData] = useState({
     name: '',
-    address: '',
     email: '',
-    phone: ''
+    password: '',
+    confirmPassword: ''
   });
-  
+
   const [isDirty, setIsDirty] = useState(false);
+  const [error, setError] = useState('');
 
   // Generate user ID
   const generateUserId = () => uuidv4();
 
   // Handle form submission
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    
-    const userData = {
-      id: generateUserId(),
-      ...formData
-    };
+    setError('');
 
-    // Save to localStorage
-    localStorage.setItem('userData', JSON.stringify(userData));
-    alert('Data saved successfully!');
-    setIsDirty(false);
+    // Validation
+    if (formData.password !== formData.confirmPassword) {
+      setError('Passwords do not match');
+      return;
+    }
+
+    try {
+      // Hash password
+      const hashedPassword = await bcrypt.hash(formData.password, 10);
+      
+      const userData = {
+        id: generateUserId(),
+        name: formData.name,
+        email: formData.email,
+        password: hashedPassword
+      };
+
+      // Get existing users from localStorage
+      const existingUsers = JSON.parse(localStorage.getItem('users')) || [];
+      
+      // Check if user already exists
+      if (existingUsers.some(user => user.email === formData.email)) {
+        setError('User already exists with this email');
+        return;
+      }
+
+      // Save to localStorage
+      const updatedUsers = [...existingUsers, userData];
+      localStorage.setItem('users', JSON.stringify(updatedUsers));
+      
+      alert('Signup successful!');
+      setIsDirty(false);
+      setFormData({
+        name: '',
+        email: '',
+        password: '',
+        confirmPassword: ''
+      });
+
+    } catch (err) {
+      setError('Error creating account. Please try again.');
+      console.error('Signup error:', err);
+    }
   };
 
   // Handle input changes
@@ -55,8 +91,10 @@ const Form = () => {
 
   return (
     <div className="max-w-md mx-auto p-6 bg-white rounded-lg shadow-md">
-      <h2 className="text-2xl font-bold mb-6 text-gray-800">User Information</h2>
+      <h2 className="text-2xl font-bold mb-6 text-gray-800">Sign Up</h2>
       
+      {error && <div className="mb-4 text-red-600 text-sm">{error}</div>}
+
       <form onSubmit={handleSubmit} className="space-y-4">
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-1">
@@ -66,20 +104,6 @@ const Form = () => {
             type="text"
             name="name"
             value={formData.name}
-            onChange={handleChange}
-            className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-            required
-          />
-        </div>
-
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">
-            Address
-          </label>
-          <input
-            type="text"
-            name="address"
-            value={formData.address}
             onChange={handleChange}
             className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
             required
@@ -102,15 +126,31 @@ const Form = () => {
 
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-1">
-            Phone
+            Password
           </label>
           <input
-            type="tel"
-            name="phone"
-            value={formData.phone}
+            type="password"
+            name="password"
+            value={formData.password}
             onChange={handleChange}
             className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
             required
+            minLength="6"
+          />
+        </div>
+
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-1">
+            Confirm Password
+          </label>
+          <input
+            type="password"
+            name="confirmPassword"
+            value={formData.confirmPassword}
+            onChange={handleChange}
+            className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            required
+            minLength="6"
           />
         </div>
 
@@ -118,7 +158,7 @@ const Form = () => {
           type="submit"
           className="w-full bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 transition-colors"
         >
-          Save Data
+          Sign Up
         </button>
       </form>
 
@@ -131,4 +171,4 @@ const Form = () => {
   );
 };
 
-export default Form;
+export default Signup;

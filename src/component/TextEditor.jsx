@@ -1,67 +1,79 @@
 import { useState, useEffect } from 'react';
+import ReactQuill from 'react-quill';
+import 'react-quill/dist/quill.snow.css';
 
 const TextEditor = () => {
   const [content, setContent] = useState('');
-  const [userData, setUserData] = useState(null);
+  const [isDirty, setIsDirty] = useState(false);
 
+  // Load saved content from localStorage on mount
   useEffect(() => {
-    // Load user data from localStorage
-    const savedData = localStorage.getItem('userData');
-    if (savedData) {
-      setUserData(JSON.parse(savedData));
+    const savedContent = localStorage.getItem('richTextContent');
+    if (savedContent) {
+      setContent(savedContent);
     }
   }, []);
 
-  const applyFormatting = (command) => {
-    document.execCommand(command, false, null);
+  // Handle content changes
+  const handleContentChange = (value) => {
+    setContent(value);
+    if (!isDirty) setIsDirty(true);
+    
+    // Auto-save to localStorage
+    localStorage.setItem('richTextContent', value);
+    setIsDirty(false);
+  };
+
+  // Editor modules and formats
+  const modules = {
+    toolbar: [
+      ['bold', 'italic', 'underline'],
+      [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+      ['clean']
+    ]
+  };
+
+  const formats = [
+    'bold', 'italic', 'underline',
+    'list', 'bullet'
+  ];
+
+  // Reset editor content
+  const handleReset = () => {
+    setContent('');
+    localStorage.removeItem('richTextContent');
+    setIsDirty(false);
   };
 
   return (
-    <div className="max-w-4xl mx-auto p-6">
-      <div className="mb-4 space-x-2">
-        <button
-          onClick={() => applyFormatting('bold')}
-          className="px-3 py-1 border rounded hover:bg-gray-100"
-        >
-          <strong>B</strong>
-        </button>
-        <button
-          onClick={() => applyFormatting('italic')}
-          className="px-3 py-1 border rounded hover:bg-gray-100"
-        >
-          <em>I</em>
-        </button>
-        <button
-          onClick={() => applyFormatting('underline')}
-          className="px-3 py-1 border rounded hover:bg-gray-100"
-        >
-          <u>U</u>
-        </button>
-        <button
-          onClick={() => applyFormatting('insertUnorderedList')}
-          className="px-3 py-1 border rounded hover:bg-gray-100"
-        >
-          • List
-        </button>
+    <div className="max-w-4xl mx-auto p-6 bg-white rounded-lg shadow-md">
+      <h2 className="text-2xl font-bold mb-6 text-gray-800">Rich Text Editor</h2>
+      
+      <div className="mb-4">
+        <ReactQuill
+          value={content}
+          onChange={handleContentChange}
+          modules={modules}
+          formats={formats}
+          theme="snow"
+          className="h-64 mb-4"
+        />
       </div>
 
-      {userData && (
-        <div className="mb-4 p-4 bg-gray-50 rounded">
-          <h3 className="font-bold mb-2">User Data Preview:</h3>
-          <p>ID: {userData.id}</p>
-          <p>Name: {userData.name}</p>
-          <p>Email: {userData.email}</p>
-          <p>Phone: {userData.phone}</p>
-          <p>Address: {userData.address}</p>
-        </div>
-      )}
-
-      <div
-        contentEditable
-        className="w-full min-h-[200px] p-4 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-        onInput={(e) => setContent(e.currentTarget.innerHTML)}
-        dangerouslySetInnerHTML={{ __html: content }}
-      />
+      <div className="flex gap-4">
+        <button
+          onClick={handleReset}
+          className="px-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-600 transition-colors"
+        >
+          Clear Content
+        </button>
+        
+        {isDirty && (
+          <span className="self-center text-sm text-yellow-600">
+            Unsaved changes
+          </span>
+        )}
+      </div>
     </div>
   );
 };

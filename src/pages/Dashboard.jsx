@@ -1,10 +1,11 @@
 import { useState } from 'react';
 import Counter from '../component/Counter';
 import Profile from '../component/Profile';
+import ProfileTrends from '../component/ProfileTrends';
 
 const DashSidebar = ({ activeItem, onSelectItem }) => {
   return (
-    <div className="bg-gray-800 p-4 text-white h-auto md:min-h-screen">
+    <div className=" p-4 text-black  md:min-h-screen">
       <h2 className="text-xl font-bold mb-6">Dashboard Menu</h2>
       <nav className="space-y-2">
         {['Profile', 'Analytics', 'Reports', 'Settings'].map((item) => (
@@ -14,7 +15,7 @@ const DashSidebar = ({ activeItem, onSelectItem }) => {
             className={`w-full text-left px-4 py-2 rounded-lg transition-colors ${
               activeItem === item 
                 ? 'bg-indigo-600 text-white' 
-                : 'hover:bg-gray-700'
+                : 'hover:bg-gray-700 hover:text-white'
             }`}
           >
             {item}
@@ -31,7 +32,7 @@ const Dashboard = () => {
   const renderContent = () => {
     switch(activeItem) {
     //   case 'profile': return <div><Counter /></div>;
-      case 'Analytics': return <div>Analytics Dashboard</div>;
+      case 'Analytics': return <div><ProfileTrends /></div>;
       case 'Reports': return <div>Report Generation</div>;
       case 'Settings': return <div>System Settings</div>;
     //   case 'Profile': return <div>User Profile</div>;
@@ -50,7 +51,7 @@ const Dashboard = () => {
       </div>
 
       {/* Content Container (80% width on desktop) */}
-      <div className="flex-1 bg-gray-100 p-8 overflow-y-auto">
+      <div className="flex-1 bg-gray-100 md:p-8 p-2 overflow-y-auto">
         {/* <div className="max-w-4xl mx-auto"> */}
           {/* <h1 className="text-3xl font-bold mb-6 text-gray-800">{activeItem}</h1> */}
           <div className="">
