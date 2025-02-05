@@ -24,7 +24,6 @@ function App() {
     <Navbar />
     <Routes>
 <Route element={<PrivateRoute />}>
-
 <Route path='/dashboard' element={<Dashboard />} />
 </Route>
     <Route path='/' element={<Counter/>} />
