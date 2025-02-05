@@ -5,7 +5,7 @@ import "./App.css";
 import Counter from "./component/Counter";
 import TextEditor from "./component/TextEditor";
 import Navbar from "./component/Navbar";
-import { Route, Router, Routes } from "react-router-dom";
+import { BrowserRouter, Route,  Routes } from "react-router-dom";
 import Dashboard from "./pages/Dashboard";
 import Footer from "./component/Footer";
 import Form from "./component/Form";
@@ -20,7 +20,7 @@ function App() {
   const [count, setCount] = useState(0);
 
   return (
-    <>
+    <BrowserRouter>
       <Navbar />
       <Routes>
         <Route element={<PrivateRoute />}>
@@ -36,7 +36,7 @@ function App() {
       </Routes>
       <Footer />
       {/* <Counter /> */}
-    </>
+    </BrowserRouter>
   );
 }
 
