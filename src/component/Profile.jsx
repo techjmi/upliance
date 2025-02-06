@@ -1,15 +1,15 @@
 import React, { useEffect, useState } from "react";
 import ProfileSkeleton from "../skeleton/Profileskeleton";
+import { useNavigate } from "react-router";
 const url ="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTSLU5_eUUGBfxfxRd4IquPiEwLbt4E_6RYMw&s";
 
 const Profile = () => {
- 
-
   const userData = JSON.parse(localStorage.getItem("currentUser"));
   const [isLoading, setIsLoading] = useState(true);
+  const navigate= useNavigate()
   const handleLogout = () => {
     localStorage.removeItem("currentUser");
-    window.location.href = "/login";
+  navigate('/login')
   };
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -54,8 +54,6 @@ const Profile = () => {
       </div>
       </div>
       )}
-      
-  
     </>
   );
 };

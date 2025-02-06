@@ -3,14 +3,14 @@ import { useState } from 'react';
 export default function Counter() {
   const [count, setCount] = useState(0);
   
-  // Calculate background opacity (capped at 90% opacity)
+  // Calculate background opacity 
   const bgOpacity = Math.min(0.9, count * 0.01);
   
   return (
     <div 
       className="min-h-screen w-full flex flex-col justify-center items-center transition-all duration-300"
       style={{
-        // Linear color intensity with bezier curve transition
+        // Linear color intensity 
         backgroundColor: `rgba(99, 102, 241, ${bgOpacity})`,
         transitionTimingFunction: 'cubic-bezier(0.4, 0, 0.2, 1)'
       }}

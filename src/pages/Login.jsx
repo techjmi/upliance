@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import bcrypt from 'bcryptjs';
+import { useNavigate } from 'react-router-dom';
 
 const Login = () => {
   const [formData, setFormData] = useState({
@@ -8,8 +9,9 @@ const Login = () => {
   });
 
   const [error, setError] = useState('');
-  const [isDirty, setIsDirty] = useState(false);
+  const [isSaved, setisSaved] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const navigate = useNavigate(); 
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -17,7 +19,7 @@ const Login = () => {
       ...prev,
       [name]: value
     }));
-    if (!isDirty) setIsDirty(true);
+    if (!isSaved) setisSaved(true);
   };
 
   const handleSubmit = async (e) => {
@@ -44,8 +46,8 @@ const Login = () => {
           email: user.email
         }));
         
-        // Redirect to dashboard or home page
-        window.location.href = '/dashboard';
+        // Navigate to dashboard or home page
+        navigate('/dashboard');
       } else {
         setError('Invalid email or password');
       }
@@ -60,7 +62,7 @@ const Login = () => {
   // Unsaved changes warning
   useEffect(() => {
     const handleBeforeUnload = (e) => {
-      if (isDirty) {
+      if (isSaved) {
         e.preventDefault();
         e.returnValue = 'You have unsaved changes. Are you sure you want to leave?';
       }
@@ -68,7 +70,7 @@ const Login = () => {
 
     window.addEventListener('beforeunload', handleBeforeUnload);
     return () => window.removeEventListener('beforeunload', handleBeforeUnload);
-  }, [isDirty]);
+  }, [isSaved]);
 
   return (
     <div className="max-w-md mx-auto p-6 bg-white rounded-lg shadow-md">
@@ -78,9 +80,7 @@ const Login = () => {
 
       <form onSubmit={handleSubmit} className="space-y-4">
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">
-            Email
-          </label>
+          <label className="block text-sm font-medium text-gray-700 mb-1">Email</label>
           <input
             type="email"
             name="email"
@@ -92,9 +92,7 @@ const Login = () => {
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">
-            Password
-          </label>
+          <label className="block text-sm font-medium text-gray-700 mb-1">Password</label>
           <input
             type="password"
             name="password"
@@ -122,7 +120,7 @@ const Login = () => {
         </p>
       </div>
 
-      {isDirty && (
+      {isSaved && (
         <div className="mt-4 text-sm text-yellow-600">
           You have unsaved changes!
         </div>

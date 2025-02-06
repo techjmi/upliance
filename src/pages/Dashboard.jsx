@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import Counter from '../component/Counter';
 import Profile from '../component/Profile';
 import ProfileTrends from '../component/ProfileTrends';
 
@@ -52,12 +51,9 @@ const Dashboard = () => {
 
       {/* Content Container (80% width on desktop) */}
       <div className="flex-1 bg-gray-100 md:p-8 p-2 overflow-y-auto">
-        {/* <div className="max-w-4xl mx-auto"> */}
-          {/* <h1 className="text-3xl font-bold mb-6 text-gray-800">{activeItem}</h1> */}
           <div className="">
             {renderContent()}
           </div>
-        {/* </div> */}
       </div>
     </div>
   );

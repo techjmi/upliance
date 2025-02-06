@@ -11,7 +11,6 @@ const ProfileTrends = () => {
     { month: 'Apr', users: 4800, active: 3800 },
     { month: 'May', users: 6100, active: 4500 }
   ];
-
   const ageData = [
     { name: '18-25', value: 400 },
     { name: '26-35', value: 1200 },

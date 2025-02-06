@@ -1,14 +1,12 @@
 import { useState } from "react";
-import reactLogo from "./assets/react.svg";
-import viteLogo from "/vite.svg";
 import "./App.css";
 import Counter from "./component/Counter";
-import TextEditor from "./component/TextEditor";
+import TextEditor from "./pages/TextEditor";
 import Navbar from "./component/Navbar";
 import { BrowserRouter, Route,  Routes } from "react-router-dom";
 import Dashboard from "./pages/Dashboard";
 import Footer from "./component/Footer";
-import Form from "./component/Form";
+import Form from "./pages/Form";
 import Signup from "./pages/Signup";
 import Login from "./pages/Login";
 import PrivateRoute from "./component/PrivateRoute";
@@ -33,6 +31,8 @@ function App() {
         <Route path="/contact" element={<Contact />} />
         <Route path="/about" element={<About />} />
         <Route path="/services" element={<Service />} />
+        <Route path="/text" element={<TextEditor/>} />
+        <Route path="/user" element={<Form/>} />
       </Routes>
       <Footer />
       {/* <Counter /> */}

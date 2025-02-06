@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import axios from 'axios';
-
 const Contact = () => {
   const [formData, setFormData] = useState({
     name: '',
@@ -16,7 +15,6 @@ const Contact = () => {
       [e.target.name]: e.target.value
     });
   };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsSubmitting(true);
@@ -24,7 +22,7 @@ const Contact = () => {
 
     try {
       // Replace with your actual API endpoint
-      const response = await axios.post('https://api.example.com/contact', formData);
+      const response = await axios.post('api/contact', formData);
       
       if (response.status === 200) {
         setSubmitStatus('success');

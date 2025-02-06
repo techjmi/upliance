@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router';
 import { v4 as uuidv4 } from 'uuid';
-
 const Form = () => {
   // Form state
   const [formData, setFormData] = useState({
@@ -10,12 +10,12 @@ const Form = () => {
     phone: ''
   });
   
-  const [isDirty, setIsDirty] = useState(false);
-
-  // Generate user ID
+  const [isSaved, setisSaved] = useState(false);
+const navigate= useNavigate()
+  // User ID
   const generateUserId = () => uuidv4();
 
-  // Handle form submission
+  // Form submission
   const handleSubmit = (e) => {
     e.preventDefault();
     
@@ -26,24 +26,26 @@ const Form = () => {
 
     // Save to localStorage
     localStorage.setItem('userData', JSON.stringify(userData));
+
     alert('Data saved successfully!');
-    setIsDirty(false);
+    navigate('/text')
+    setisSaved(false); 
   };
 
-  // Handle input changes
+  // Input changes
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData(prev => ({
       ...prev,
       [name]: value
     }));
-    if (!isDirty) setIsDirty(true);
+    setisSaved(true);
   };
 
   // Unsaved changes warning
   useEffect(() => {
     const handleBeforeUnload = (e) => {
-      if (isDirty) {
+      if (isSaved) {
         e.preventDefault();
         e.returnValue = 'You have unsaved changes. Are you sure you want to leave?';
       }
@@ -51,7 +53,7 @@ const Form = () => {
 
     window.addEventListener('beforeunload', handleBeforeUnload);
     return () => window.removeEventListener('beforeunload', handleBeforeUnload);
-  }, [isDirty]);
+  }, [isSaved]);
 
   return (
     <div className="max-w-md mx-auto p-6 bg-white rounded-lg shadow-md">
@@ -59,9 +61,7 @@ const Form = () => {
       
       <form onSubmit={handleSubmit} className="space-y-4">
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">
-            Name
-          </label>
+          <label className="block text-sm font-medium text-gray-700 mb-1">Name</label>
           <input
             type="text"
             name="name"
@@ -73,9 +73,7 @@ const Form = () => {
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">
-            Address
-          </label>
+          <label className="block text-sm font-medium text-gray-700 mb-1">Address</label>
           <input
             type="text"
             name="address"
@@ -87,9 +85,7 @@ const Form = () => {
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">
-            Email
-          </label>
+          <label className="block text-sm font-medium text-gray-700 mb-1">Email</label>
           <input
             type="email"
             name="email"
@@ -101,9 +97,7 @@ const Form = () => {
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">
-            Phone
-          </label>
+          <label className="block text-sm font-medium text-gray-700 mb-1">Phone</label>
           <input
             type="tel"
             name="phone"
@@ -122,7 +116,7 @@ const Form = () => {
         </button>
       </form>
 
-      {isDirty && (
+      {isSaved && (
         <div className="mt-4 text-sm text-yellow-600">
           You have unsaved changes!
         </div>
